@@ -1,7 +1,11 @@
+import { COMPANY } from "../config/company";
+import { PLANS } from "../config/plans";
+import Header from "../components/layout/Header";
+import QuoteCalculator from "../components/quote/QuoteCalculator";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import {
-  Menu, X, ArrowRight, Sparkles, Globe, Users, Clock, MessageCircle,
+  ArrowRight, Sparkles, Globe, Users, Clock, MessageCircle,
   Smartphone, Search, Server, ShieldCheck, Monitor, Rocket, ShoppingBag,
   Database, Code2, HardDrive, AtSign, Mail, Wrench, LifeBuoy, ArrowUpRight,
   Check, ChevronDown, Phone, MapPin, Instagram, Facebook, Linkedin, Twitter,
@@ -58,6 +62,7 @@ function LandingPage() {
       <Benefits />
       <Services />
       <Plans />
+      <QuoteCalculator />
       <Recovery />
       <Process />
       <Portfolio />
@@ -67,93 +72,6 @@ function LandingPage() {
       <Contact />
       <Footer />
     </div>
-  );
-}
-
-/* ---------------- HEADER ---------------- */
-function Header() {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 20);
-    window.addEventListener("scroll", onScroll);
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    <header
-      className={`fixed top-0 inset-x-0 z-50 transition-smooth ${
-        scrolled
-          ? "backdrop-blur-xl bg-background/70 border-b border-border/60"
-          : "bg-transparent"
-      }`}
-    >
-      <div className="mx-auto max-w-7xl px-6 lg:px-8 h-16 md:h-20 flex items-center justify-between">
-        <a href="#inicio" className="flex items-center gap-2 group">
-          <span className="relative grid place-items-center h-9 w-9 rounded-xl gradient-primary shadow-elegant">
-            <Sparkles className="h-4 w-4 text-white" />
-          </span>
-          <span className={`font-bold tracking-tight text-lg ${scrolled ? "text-foreground" : "text-white"}`}>
-            Ecuaventas<span className="text-gradient-gold"> Digital</span>
-          </span>
-        </a>
-
-        <nav className="hidden lg:flex items-center gap-1">
-          {NAV.map((n) => (
-            <a
-              key={n.href}
-              href={n.href}
-              className={`px-3 py-2 text-sm font-medium rounded-lg transition-smooth hover:bg-foreground/5 ${
-                scrolled ? "text-foreground/80 hover:text-foreground" : "text-white/80 hover:text-white"
-              }`}
-            >
-              {n.label}
-            </a>
-          ))}
-        </nav>
-
-        <div className="hidden lg:flex items-center gap-3">
-          <a
-            href="#contacto"
-            className="inline-flex items-center gap-1.5 rounded-full gradient-primary text-white text-sm font-semibold px-5 py-2.5 shadow-elegant hover:opacity-95 transition-smooth"
-          >
-            Solicitar Cotización <ArrowRight className="h-4 w-4" />
-          </a>
-        </div>
-
-        <button
-          onClick={() => setOpen(!open)}
-          className={`lg:hidden p-2 rounded-lg ${scrolled ? "text-foreground" : "text-white"}`}
-          aria-label="Menu"
-        >
-          {open ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-        </button>
-      </div>
-
-      {open && (
-        <div className="lg:hidden bg-background border-t border-border">
-          <div className="px-6 py-4 flex flex-col gap-1">
-            {NAV.map((n) => (
-              <a
-                key={n.href}
-                href={n.href}
-                onClick={() => setOpen(false)}
-                className="px-3 py-3 rounded-lg text-foreground/80 hover:bg-muted"
-              >
-                {n.label}
-              </a>
-            ))}
-            <a
-              href="#contacto"
-              onClick={() => setOpen(false)}
-              className="mt-2 text-center rounded-full gradient-primary text-white font-semibold px-5 py-3"
-            >
-              Solicitar Cotización
-            </a>
-          </div>
-        </div>
-      )}
-    </header>
   );
 }
 
@@ -190,7 +108,9 @@ function Hero() {
           </p>
           <div className="mt-10 flex flex-col sm:flex-row gap-4">
             <a
-              href="#contacto"
+              href={`https://wa.me/${COMPANY.whatsapp}?text=Hola,%20quiero%20una%20cotización%20para%20una%20página%20web.`}
+              target="_blank"
+              rel="noopener noreferrer"
               className="group inline-flex items-center justify-center gap-2 rounded-full gradient-primary text-white font-semibold px-7 py-4 shadow-elegant hover:shadow-gold transition-smooth"
             >
               Solicitar Cotización
@@ -223,7 +143,7 @@ function Hero() {
           <div className="relative rounded-3xl overflow-hidden shadow-elegant ring-1 ring-white/10 animate-float">
             <img
               src={heroImg}
-              alt="Dashboard tecnológico premium Ecuaventas Digital"
+              alt={`Dashboard tecnológico premium ${COMPANY.nombre}`}
               width={1408}
               height={1200}
               className="w-full h-auto"
@@ -346,12 +266,7 @@ function Services() {
 
 /* ---------------- PLANS ---------------- */
 function Plans() {
-  const plans = [
-    { name: "Impulso", price: 100, tag: "Ideal para emprendedores", features: ["Página web de 1 sección", "Diseño responsive", "SSL incluido", "Formulario de contacto"] },
-    { name: "Crecimiento", price: 180, tag: "Ideal para pequeños negocios", features: ["Hasta 5 secciones", "SEO básico", "WhatsApp integrado", "Hosting 1 año", "Soporte prioritario"], featured: true },
-    { name: "Empresa", price: 350, tag: "Ideal para empresas", features: ["Sitio web corporativo", "Blog / noticias", "SEO avanzado", "Correos corporativos", "Analítica avanzada"] },
-    { name: "Corporativo", price: 700, tag: "Ideal para proyectos grandes", features: ["Sistema a medida", "Panel de administración", "Integraciones API", "Hosting premium", "Soporte 24/7"] },
-  ];
+  const plans = PLANS;
   return (
     <section id="planes" className="py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
@@ -363,46 +278,44 @@ function Plans() {
         <div className="mt-16 grid md:grid-cols-2 lg:grid-cols-4 gap-6">
           {plans.map((p, i) => (
             <div
-              key={p.name}
-              className={`reveal relative rounded-3xl p-8 flex flex-col transition-smooth hover:-translate-y-2 ${
-                p.featured
-                  ? "bg-[color:var(--navy-deep)] text-white shadow-elegant border border-white/10"
-                  : "bg-card border border-border shadow-soft hover:shadow-elegant"
-              }`}
+              key={p.nombre}
+              className={`reveal relative rounded-3xl p-8 flex flex-col transition-smooth hover:-translate-y-2 ${p.destacado
+                ? "bg-[color:var(--navy-deep)] text-white shadow-elegant border border-white/10"
+                : "bg-card border border-border shadow-soft hover:shadow-elegant"
+                }`}
               style={{ transitionDelay: `${i * 60}ms` }}
             >
-              {p.featured && (
+              {p.destacado && (
                 <span className="absolute -top-3 left-1/2 -translate-x-1/2 rounded-full gradient-gold text-[color:var(--navy-deep)] text-xs font-bold px-4 py-1 shadow-gold">
                   MÁS POPULAR
                 </span>
               )}
               <div className="text-xs uppercase tracking-widest opacity-70">Plan</div>
-              <h3 className={`mt-1 text-2xl font-bold ${p.featured ? "text-white" : "text-foreground"}`}>{p.name}</h3>
-              <p className={`mt-1 text-sm ${p.featured ? "text-white/60" : "text-muted-foreground"}`}>{p.tag}</p>
+              <h3 className={`mt-1 text-2xl font-bold ${p.destacado ? "text-white" : "text-foreground"}`}>{p.nombre}</h3>
+              <p className={`mt-1 text-sm ${p.destacado ? "text-white/60" : "text-muted-foreground"}`}>{p.descripcion}</p>
               <div className="mt-6 flex items-baseline gap-1">
                 <span className="text-sm opacity-70">Desde</span>
-                <span className={`text-5xl font-extrabold ${p.featured ? "text-gradient-gold" : "text-foreground"}`}>
-                  ${p.price}
+                <span className={`text-5xl font-extrabold ${p.destacado ? "text-gradient-gold" : "text-foreground"}`}>
+                  ${p.precio}
                 </span>
                 <span className="text-sm opacity-70">USD</span>
               </div>
               <ul className="mt-8 space-y-3 flex-1">
-                {p.features.map((f) => (
+                {p.caracteristicas.map((f) => (
                   <li key={f} className="flex items-start gap-2.5 text-sm">
-                    <Check className={`h-4 w-4 mt-0.5 shrink-0 ${p.featured ? "text-[color:var(--gold)]" : "text-primary"}`} />
-                    <span className={p.featured ? "text-white/85" : "text-foreground/85"}>{f}</span>
+                    <Check className={`h-4 w-4 mt-0.5 shrink-0 ${p.destacado ? "text-[color:var(--gold)]" : "text-primary"}`} />
+                    <span className={p.destacado ? "text-white/85" : "text-foreground/85"}>{f}</span>
                   </li>
                 ))}
               </ul>
               <a
                 href="#contacto"
-                className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full font-semibold px-6 py-3 transition-smooth ${
-                  p.featured
-                    ? "gradient-gold text-[color:var(--navy-deep)] hover:opacity-95"
-                    : "bg-foreground text-background hover:opacity-90"
-                }`}
+                className={`mt-8 inline-flex items-center justify-center gap-2 rounded-full font-semibold px-6 py-3 transition-smooth ${p.destacado
+                  ? "gradient-gold text-[color:var(--navy-deep)] hover:opacity-95"
+                  : "bg-foreground text-background hover:opacity-90"
+                  }`}
               >
-                Elegir {p.name} <ArrowRight className="h-4 w-4" />
+                Elegir {p.nombre} <ArrowRight className="h-4 w-4" />
               </a>
             </div>
           ))}
@@ -479,9 +392,8 @@ function Process() {
             {steps.map((s, i) => (
               <div
                 key={s.n}
-                className={`reveal relative flex md:grid md:grid-cols-2 gap-6 md:gap-16 items-center ${
-                  i % 2 === 1 ? "md:[&>div:first-child]:col-start-2" : ""
-                }`}
+                className={`reveal relative flex md:grid md:grid-cols-2 gap-6 md:gap-16 items-center ${i % 2 === 1 ? "md:[&>div:first-child]:col-start-2" : ""
+                  }`}
               >
                 <div className={`flex-1 md:${i % 2 === 1 ? "text-left" : "text-right"} pl-12 md:pl-0`}>
                   <div className={`inline-flex flex-col ${i % 2 === 1 ? "md:items-start" : "md:items-end"}`}>
@@ -601,7 +513,7 @@ function About() {
             Un equipo que combina <span className="text-gradient-primary">diseño, tecnología y estrategia</span>.
           </h2>
           <p className="mt-6 text-muted-foreground leading-relaxed">
-            En Ecuaventas Digital creemos que toda empresa merece una presencia
+            En {COMPANY.nombre} creemos que toda empresa merece una presencia
             digital de nivel internacional. Trabajamos con estándares de las
             mejores agencias del mundo, adaptados a la realidad de Latinoamérica.
           </p>
@@ -622,7 +534,7 @@ function About() {
         <div className="reveal relative">
           <div className="absolute -inset-6 gradient-primary opacity-20 blur-3xl rounded-full" />
           <div className="relative rounded-3xl overflow-hidden shadow-elegant ring-1 ring-border">
-            <img src={heroImg} alt="Equipo Ecuaventas Digital" loading="lazy" className="w-full h-auto" />
+            <img src={heroImg} alt={`Equipo ${COMPANY.nombre}`} loading="lazy" className="w-full h-auto" />
           </div>
         </div>
       </div>
@@ -675,6 +587,43 @@ function FAQ() {
 
 /* ---------------- CONTACT ---------------- */
 function Contact() {
+
+  const [formData, setFormData] = useState({
+  nombre: "",
+  correo: "",
+  telefono: "",
+  empresa: "",
+  mensaje: "",
+});
+
+const handleChange = (
+  e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+) => {
+  setFormData({
+    ...formData,
+    [e.target.name]: e.target.value,
+  });
+};
+
+const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const mensaje = `Hola, me interesa una cotización.
+
+Nombre: ${formData.nombre}
+Correo: ${formData.correo}
+Teléfono: ${formData.telefono}
+Empresa: ${formData.empresa}
+
+Proyecto:
+${formData.mensaje}`;
+
+    window.open(
+        `https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent(mensaje)}`,
+        "_blank"
+    );
+};
+
   return (
     <section id="contacto" className="py-24 md:py-32">
       <div className="mx-auto max-w-7xl px-6 lg:px-8 grid lg:grid-cols-2 gap-12">
@@ -689,9 +638,21 @@ function Contact() {
           </p>
           <div className="mt-10 space-y-4">
             {[
-              { icon: Phone, label: "Teléfono", value: "+593 000 000 000" },
-              { icon: Mail, label: "Correo", value: "hola@ecuaventasdigital.com" },
-              { icon: MessageCircle, label: "WhatsApp", value: "Escríbenos ahora" },
+              { icon: Phone, label: "Teléfono", value: COMPANY.telefono },
+              { icon: Mail, label: "Correo", value: COMPANY.correo },
+              {
+                icon: MessageCircle, label: "WhatsApp",
+                value: (
+                  <a
+                    href={`https://wa.me/${COMPANY.whatsapp}`}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-primary font-semibold hover:underline"
+                  >
+                    Escríbenos ahora
+                  </a>
+                )
+              },
               { icon: MapPin, label: "Ubicación", value: "Ecuador · Latinoamérica" },
             ].map((c) => (
               <div key={c.label} className="flex items-center gap-4">
@@ -708,18 +669,21 @@ function Contact() {
         </div>
 
         <form
-          onSubmit={(e) => e.preventDefault()}
+          onSubmit={handleSubmit}
           className="reveal rounded-3xl border border-border bg-card p-8 md:p-10 shadow-elegant"
         >
           <div className="grid sm:grid-cols-2 gap-5">
-            <Field label="Nombre" placeholder="Tu nombre" />
-            <Field label="Correo" type="email" placeholder="tu@empresa.com" />
-            <Field label="Teléfono" placeholder="+593" />
-            <Field label="Empresa" placeholder="Nombre de tu empresa" />
+            <Field label="Nombre" name="nombre" placeholder="Tu nombre" value={formData.nombre} onChange={handleChange} />
+            <Field label="Correo" type="email" name="correo" placeholder="tu@empresa.com" value={formData.correo} onChange={handleChange} />
+            <Field label="Teléfono" name="telefono" placeholder="+593" value={formData.telefono} onChange={handleChange} />
+            <Field label="Empresa" name="empresa" placeholder="Nombre de tu empresa" value={formData.empresa} onChange={handleChange} />
           </div>
           <div className="mt-5">
             <label className="block text-sm font-medium text-foreground mb-2">Mensaje</label>
             <textarea
+              name="mensaje"
+              value={formData.mensaje}
+              onChange={handleChange}
               rows={5}
               placeholder="Cuéntanos sobre tu proyecto..."
               className="w-full rounded-xl border border-border bg-background px-4 py-3 text-sm outline-none focus:ring-2 focus:ring-primary/30 focus:border-primary transition-smooth"
@@ -727,9 +691,9 @@ function Contact() {
           </div>
           <button
             type="submit"
-            className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-full gradient-primary text-white font-semibold px-6 py-4 shadow-elegant hover:shadow-gold transition-smooth"
+            className="mt-8 w-full inline-flex items-center justify-center gap-2 rounded-full gradient-primary text-white font-semibold px-6 py-4 shadow-elegant hover:shadow-gold transition-smooth cursor-pointer hover:scale-[1.02] active:scale-[0.98]"
           >
-            Solicitar Cotización <ArrowRight className="h-4 w-4" />
+            Solicitar Cotización <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </button>
           <p className="mt-4 text-xs text-muted-foreground text-center">
             Al enviar aceptas nuestros términos y política de privacidad.
@@ -740,7 +704,14 @@ function Contact() {
   );
 }
 
-function Field({ label, ...rest }: { label: string; type?: string; placeholder?: string }) {
+function Field({ label, ...rest }: {
+  label: string;
+  type?: string;
+  placeholder?: string;
+  name?: string;
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+}) {
   return (
     <div>
       <label className="block text-sm font-medium text-foreground mb-2">{label}</label>
@@ -798,8 +769,8 @@ function Footer() {
         <div>
           <h4 className="font-semibold mb-4">Contacto</h4>
           <ul className="space-y-3 text-sm text-white/60">
-            <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> hola@ecuaventasdigital.com</li>
-            <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> +593 000 000 000</li>
+            <li className="flex items-center gap-2"><Mail className="h-4 w-4" /> {COMPANY.correo}</li>
+            <li className="flex items-center gap-2"><Phone className="h-4 w-4" /> {COMPANY.telefono}</li>
             <li className="flex items-center gap-2"><MessageCircle className="h-4 w-4" /> WhatsApp directo</li>
             <li className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Ecuador</li>
           </ul>
@@ -807,7 +778,7 @@ function Footer() {
       </div>
       <div className="border-t border-white/10">
         <div className="mx-auto max-w-7xl px-6 lg:px-8 py-6 flex flex-col md:flex-row items-center justify-between gap-3 text-xs text-white/50">
-          <p>© {new Date().getFullYear()} Ecuaventas Digital. Todos los derechos reservados.</p>
+          <p>© {new Date().getFullYear()} {COMPANY.nombre}. Todos los derechos reservados.</p>
           <div className="flex gap-6">
             <a href="#" className="hover:text-white transition-smooth">Términos</a>
             <a href="#" className="hover:text-white transition-smooth">Privacidad</a>
